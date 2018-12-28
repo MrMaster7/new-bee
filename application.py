@@ -1,8 +1,11 @@
 import logging
 import logging.handlers
+import boto3
+import json
 
 from wsgiref.simple_server import make_server, WSGIServer
 from SocketServer import ThreadingMixIn
+from string import Template
 
 # Create logger
 logger = logging.getLogger(__name__)
@@ -22,7 +25,7 @@ handler.setFormatter(formatter)
 # add Handler to Logger
 logger.addHandler(handler)
 
-welcome = """
+html_template= """
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -108,6 +111,7 @@ welcome = """
 <body id="sample">
   <div class="textColumn">
     <h1>Welcome to MARS Innovation LLC!</h1>
+    <h1>$thing_shadow</h1>
     <p>Your Docker Container is now running in Elastic Beanstalk on your own dedicated environment in the AWS Cloud. Created by: Marsel Shushe</p>
   </div>
   
@@ -148,6 +152,7 @@ def application(environ, start_response):
             logger.warning('Error retrieving request body for async work.')
         response = ''
     else:
+        welcome = Template(html_template).safe_substitute(thing_shadow=jsonState['state']['reported']['open'])
         response = welcome
     status = '200 OK'
     headers = [('Content-type', 'text/html')]
@@ -158,7 +163,13 @@ def application(environ, start_response):
 class ThreadingWSGIServer(ThreadingMixIn, WSGIServer): 
     pass
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
+    client = boto3.client('iot-data')
+    response = client.get_thing_shadow(thingName='IoTDevice_ESP8266')
+    streamingBody = response["payload"]
+    jsonState = json.loads(streamingBody.read())
+    print jsonState
     httpd = make_server('', 8000, application, ThreadingWSGIServer)
+
     print "Serving on port 8000..."
     httpd.serve_forever()
