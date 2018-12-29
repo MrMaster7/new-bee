@@ -41,7 +41,7 @@ def application(environ, start_response):
     method  = environ['REQUEST_METHOD']
     request_body_size = 0
     
-    html_filename = 'main.html'
+    html_filename = '/tmp/main.html'
     HtmlFile = open(html_filename, 'r')
     html_template = HtmlFile.read()
     print html_template

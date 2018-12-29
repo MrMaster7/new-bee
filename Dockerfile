@@ -2,6 +2,7 @@ FROM python:2.7
 
 # Add sample application
 ADD application.py /tmp/application.py
+ADD main.html /tmp/main.html
 
 # Install any needed packages specified in requirements.txt
 # RUN pip install boto3==1.9.71
