@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Welcome</title>
+  <style>
+  body {
+    color: #ffffff;
+    background-color: #E0E0E0;
+    font-family: Arial, sans-serif;
+    font-size:14px;
+    -moz-transition-property: text-shadow;
+    -moz-transition-duration: 4s;
+    -webkit-transition-property: text-shadow;
+    -webkit-transition-duration: 4s;
+    text-shadow: none;
+  }
+  body.blurry {
+    -moz-transition-property: text-shadow;
+    -moz-transition-duration: 4s;
+    -webkit-transition-property: text-shadow;
+    -webkit-transition-duration: 4s;
+    text-shadow: #fff 0px 0px 25px;
+  }
+  a {
+    color: #0188cc;
+  }
+  .textColumn, .linksColumn {
+    padding: 2em;
+  }
+  .textColumn {
+    position: absolute;
+    top: 0px;
+    right: 50%;
+    bottom: 0px;
+    left: 0px;
+
+    text-align: right;
+    padding-top: 11em;
+    background-color: #24B8EB;
+  }
+  .textColumn p {
+    width: 75%;
+    float:right;
+  }
+  .linksColumn {
+    position: absolute;
+    top:0px;
+    right: 0px;
+    bottom: 0px;
+    left: 50%;
+    background-color: #A9A9A9;
+  }
+
+  h1 {
+    font-size: 500%;
+    font-weight: normal;
+    margin-bottom: 0em;
+  }
+  h2 {
+    font-size: 200%;
+    font-weight: normal;
+    margin-bottom: 0em;
+  }
+  ul {
+    padding-left: 1em;
+    margin: 0px;
+  }
+  li {
+    margin: 1em 0em;
+  }
+
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+  </style>
+</head>
+<body id="sample">
+  <div class="textColumn">
+    <h1>Welcome to MARS Innovation LLC!</h1>
+    <h1>$thing_shadow</h1>
+    <p>Your Docker Container is now running in Elastic Beanstalk on your own dedicated environment in the AWS Cloud. Created by: Marsel Shushe</p>
+  </div>
+  
+  <div class="linksColumn"> 
+    <h2>Sample Apps</h2>
+    <ul>
+    <li>GitHub: <a href="https://github.com/awslabs/eb-demo-php-simple-app/tree/docker-apache">PHP and Amazon RDS</a></li>
+    <li>GitHub: <a href="https://github.com/awslabs/eb-py-flask-signup/tree/docker">Python, DynamoDB, and SNS</a></li>
+    </ul>
+
+   <form method="post" action="">
+        <p>
+           Age: <input type="text" name="age" value="">
+        </p>
+        <p>
+            Hobbies:
+            <input
+                name="hobbies" type="checkbox" value="software"
+                %(checked-software)s
+            > Software
+            <input
+                name="hobbies" type="checkbox" value="tunning"
+                %(checked-tunning)s
+            > Auto Tunning
+        </p>
+        <p>
+            <input type="submit" value="Submit">
+        </p>
+    </form>
+    <p>
+        Age: $age_value<br>
+        Hobbies: %(hobbies)s
+    </p>
+
+	<p>Click on the button to open the dropdown menu.</p>
+
+	<div class="dropdown">
+	  <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+	  <div id="myDropdown" class="dropdown-content">
+	    <a href="#home">Home</a>
+	    <a href="#about">About</a>
+	    <a href="#contact">Contact</a>
+	  </div>
+	</div>
+  </div>
+
+<script>
+/* When the user clicks on the button, 
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
+
+</body>
+</html>
