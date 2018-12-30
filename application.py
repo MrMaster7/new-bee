@@ -2,6 +2,7 @@ import logging
 import logging.handlers
 import boto3
 import json
+import datetime
 
 from wsgiref.simple_server import make_server, WSGIServer
 from SocketServer import ThreadingMixIn
@@ -52,7 +53,7 @@ def application(environ, start_response):
     request_body_size = 0
     response = html_template
     global inc_value
-    global jsonState
+    global jsonMsg
     global age
     global garage_door_toggle_input
 	
@@ -79,22 +80,29 @@ def application(environ, start_response):
                 if action[0] == 'Get IoT States':
                     print 'REQUESTING AWS IOT INFO'
                     jsonMsg = return_thing_shadow_json()
-                    jsonState = jsonMsg['state']['reported']['open']
-                    if  jsonState == 1:
-                        garage_door_toggle_input = 'checked'
-                        print 'door closed'
-                    else: 
-                        garage_door_toggle_input = ''
-                        print 'door open'
-					 
 					#response = Template(response).safe_substitute(thing_shadow=jsonState)
         except (TypeError, ValueError):
             logger.warning('Error retrieving request body for async work.')
             request_body_size = 0
     
-    print "Age = ",age,"Visits = ", inc_value, "jsonState = ", jsonState 
+    jsonState = jsonMsg['state']['reported']['open']
+    if  jsonState == 1:
+        garage_door_toggle_input = 'checked'
+        print 'door closed'
+    else: 
+		garage_door_toggle_input = ''
+		print 'door open'
+    jsonMsg_timestamp = jsonMsg['timestamp']
+    jsonMsg_datetime = datetime.datetime.fromtimestamp(jsonMsg_timestamp).strftime("%d-%B-%Y %I:%M:%S %p")
+    jsonState_timestamp = jsonMsg['metadata']['reported']['open']['timestamp']
+    jsonState_datetime = datetime.datetime.fromtimestamp(jsonState_timestamp).strftime("%d-%B-%Y %I:%M:%S %p")
+    print("Age = ",age,"Visits = ", inc_value, "jsonState = ", jsonState)
+    current_time = datetime.datetime.now()
+    formatted_time = current_time.strftime("%d-%B-%Y %I:%M:%S %p")
+	
     response = Template(response).safe_substitute(inc_value=inc_value,age_value=age,
-    LED_toggle_handle='checked',thing_shadow=jsonState, garage_door_toggle_handle = garage_door_toggle_input)
+    LED_toggle_handle='checked',thing_shadow = jsonState, 
+    garage_door_toggle_handle = garage_door_toggle_input, formatted_time = formatted_time,jsonMsg_datetime =jsonMsg_datetime,jsonState_datetime=jsonState_datetime )
 	
     status = '200 OK'
     headers = [('Content-type', 'text/html')]
@@ -106,11 +114,8 @@ class ThreadingWSGIServer(ThreadingMixIn, WSGIServer):
     pass
 
 if __name__ == '__main__':  
-    global jsonState
+    global jsonMsg
     jsonMsg = return_thing_shadow_json()
-    jsonState = jsonMsg['state']['reported']['open']
-	
-	#jsonState = 'TestjsonState'
 	
     httpd = make_server('', 8000, application, ThreadingWSGIServer)
 

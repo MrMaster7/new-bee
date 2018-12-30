@@ -4,6 +4,14 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Welcome</title>
   <style>
+  
+  #footer{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+	color: #000000;
+  }
+  
   body {
     color: #ffffff;
     background-color: #E0E0E0;
@@ -166,6 +174,7 @@ input:checked + .slider:before {
 	pointer-events: none;
 }
 <!-- End: Disable Interaction Style -->
+
   </style>
 </head>
 <body id="sample">
@@ -203,10 +212,15 @@ input:checked + .slider:before {
 			<span class="slider"></span>
 		</label><br>
 	</h2>
-	<br><br><br><br><br><br><br><br>
-	<p>Thing Shadow State: $thing_shadow </p>
+	<br><br><br><br>
+	<h3>ESP8266 SHADOW</h3>
+	<p> <strong>Door State - Value</strong>: $thing_shadow<br> 
+		<strong>Door State - Last Message Time</strong>: $jsonMsg_datetime<br>
+        <strong>Door State - Last Update Time</strong>: $jsonState_datetime<br>
+	</p>
+	<br><br><br><br>
         <p>
-           Age: <input type="text" name="age" value="">
+           Test Entry: <input type="text" name="age" value="">
         </p>
         <p>
             Location:
@@ -224,10 +238,13 @@ input:checked + .slider:before {
         </p>
     </form>
     <p>
-        Age: $age_value <br>
+        Test Entry Value: $age_value <br>
 		Increment: $inc_value
     </p>
-    
+  </div>
+	
+  <div id="footer"> 
+    <p> <strong>Last Page Refresh:</strong> $formatted_time </p>
   </div>
 
 <script>
