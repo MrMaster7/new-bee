@@ -31,7 +31,7 @@
   .textColumn {
     position: absolute;
     top: 0px;
-    right: 50%;
+    right: 75%;
     bottom: 0px;
     left: 0px;
 
@@ -48,12 +48,13 @@
     top:0px;
     right: 0px;
     bottom: 0px;
-    left: 50%;
-    background-color: #A9A9A9;
+    left: 25%;
+    background-color: #FFFFFF;
+	color: #000000;
   }
 
   h1 {
-    font-size: 500%;
+    font-size: 400%;
     font-weight: normal;
     margin-bottom: 0em;
   }
@@ -108,56 +109,125 @@
 .dropdown a:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+<!-- Start: Toggle button Style -->
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  width: 60px;
+  height: 34px;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+<!-- End: Toggle button Style -->
+
+<!-- Start: Disable Interaction Style -->
+.no-click {
+	pointer-events: none;
+}
+<!-- End: Disable Interaction Style -->
   </style>
 </head>
 <body id="sample">
-  <div class="textColumn">
-    <h1>Welcome to MARS Innovation LLC!</h1>
-    <h1>$thing_shadow</h1>
-    <p>Your Docker Container is now running in Elastic Beanstalk on your own dedicated environment in the AWS Cloud. Created by: Marsel Shushe</p>
-  </div>
-  
+	
+	<div class="textColumn">
+	<h1>Welcome!</h1>
+	<h2>MARS Innovation LLC</h2>
+	<p> Created by: Marsel Shushe</p>
+	</div>
+	
+	<div class="dropdown">
+	  <button onclick="myFunction()" class="dropbtn">Directory</button>
+	  <div id="myDropdown" class="dropdown-content">
+		<a href="#home">Home</a>
+		<a href="#about">About</a>
+		<a href="#contact">Contact</a>
+	  </div>
+	</div>
+	
+	
   <div class="linksColumn"> 
-    <h2>Sample Apps</h2>
-    <ul>
-    <li>GitHub: <a href="https://github.com/awslabs/eb-demo-php-simple-app/tree/docker-apache">PHP and Amazon RDS</a></li>
-    <li>GitHub: <a href="https://github.com/awslabs/eb-py-flask-signup/tree/docker">Python, DynamoDB, and SNS</a></li>
-    </ul>
-
-   <form method="post" action="">
+    <form method="post" action="">
+	<input type="submit" name="action" value='Get IoT States' style="height:34px;width:100%">
+    <h2>Garage Door State:
+		<!-- Read-only (return false) toggle button: Garage Door State -->
+		<label class="switch">
+			<input type="checkbox" onclick="return false;" $garage_door_toggle_handle>
+			<span class="slider"></span>
+		</label>
+		<br><br>
+		Controllable LED:   
+		<!-- Toggle Button: Controllable LED -->
+		<label class="switch">
+			<input name="hobbies" type="checkbox" value="LED_toggle" $LED_toggle_handle>
+			<span class="slider"></span>
+		</label><br>
+	</h2>
+	<br><br><br><br><br><br><br><br>
+	<p>Thing Shadow State: $thing_shadow </p>
         <p>
            Age: <input type="text" name="age" value="">
         </p>
         <p>
-            Hobbies:
+            Location:
             <input
-                name="hobbies" type="checkbox" value="software"
-                %(checked-software)s
-            > Software
+                name="hobbies" type="checkbox" value="Albany"
+                %(checked-Albany)s
+            > Albany
             <input
-                name="hobbies" type="checkbox" value="tunning"
-                %(checked-tunning)s
-            > Auto Tunning
+                name="hobbies" type="checkbox" value="Endicott"
+                %(checked-Endicott)s
+            > Endicott
         </p>
         <p>
             <input type="submit" value="Submit">
         </p>
     </form>
     <p>
-        Age: $age_value<br>
-        Hobbies: %(hobbies)s
+        Age: $age_value <br>
+		Increment: $inc_value
     </p>
-
-	<p>Click on the button to open the dropdown menu.</p>
-
-	<div class="dropdown">
-	  <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-	  <div id="myDropdown" class="dropdown-content">
-	    <a href="#home">Home</a>
-	    <a href="#about">About</a>
-	    <a href="#contact">Contact</a>
-	  </div>
-	</div>
+    
   </div>
 
 <script>
